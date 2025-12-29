@@ -200,18 +200,22 @@ The following new test cases have been implemented to address the identified gap
 
 ### Unit Tests Added
 
-1. **MaintainersControllerTest.java** - Comprehensive unit tests for MaintainersController
-2. **CorrelationIdFilterTest.java** - Tests for request correlation ID handling
-3. **GlobalExceptionHandlerTest.java** - Extended exception handling tests
+1. **MaintainersControllerTest.java** - Comprehensive unit tests for MaintainersController (17 tests covering CRUD operations, search functionality, and error handling)
+2. **CorrelationIdFilterTest.java** - Tests for request correlation ID handling (9 tests covering header presence/absence, UUID generation, MDC management)
+3. **GlobalExceptionHandlerTest.java** - Extended exception handling tests (15 tests covering all exception types and edge cases)
 
 ### Integration Tests Added
 
-1. **PersistentMaintainersServiceTest.java** - Database integration tests for maintainer service
+1. **PersistentMaintainersServiceTest.java** - Database integration tests for maintainer service using Testcontainers (17 tests covering CRUD operations, duplicate detection, search with filters and pagination)
 
-### Non-Functional Tests Added
+### Non-Functional Tests (Not Implemented - Future Work)
 
-1. **ConcurrencyTest.java** - Tests for concurrent operations
-2. **ActuatorEndpointsTest.java** - Tests for Spring Boot Actuator endpoints
+The following non-functional test areas were identified as gaps but are recommended for future implementation:
+
+1. **Performance Testing** - Response time benchmarks, database query performance
+2. **Concurrency Testing** - Concurrent updates, race condition detection
+3. **Actuator Endpoints Testing** - Health, metrics, and info endpoint verification
+4. **Load/Stress Testing** - System behavior under load
 
 ## Recommendations
 
