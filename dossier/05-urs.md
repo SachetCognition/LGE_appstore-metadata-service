@@ -118,7 +118,7 @@ Short paths below are relative to the cited repo; `asms-src` = `appstore-metadat
 | URS-C06 | The edge shall proxy `/platforms` and `/bundles` requests to the `asbm-backend` upstream. | `[VERIFIED]` | `default.conf.template:24-26,50-87` |
 | URS-C07 | The edge shall answer `OPTIONS` preflight requests on the bundle and `asbm-backend` routes with HTTP 204 and permissive CORS headers. | `[VERIFIED]` | `default.conf.template:51-60,90-99` |
 | URS-C08 | The edge shall add `Access-Control-Allow-Origin: *` and related CORS headers to `GET`, `POST` and `DELETE` responses on those routes. | `[VERIFIED]` | `default.conf.template:61-85,100-124` |
-| URS-C09 | The edge shall intercept upstream 500, 501, 502, 503 and 504 responses and return a fixed JSON error body with HTTP 500. | `[VERIFIED]` | `default.conf.template:37-38,131-134` |
+| URS-C09 | The edge shall intercept upstream 500, 501, 502, 503 and 504 responses and replace their bodies with a fixed JSON error body (which always says `httpStatusCode: 500`); the original HTTP status code is preserved. | `[VERIFIED]` | `default.conf.template:37-38,131-134` |
 | URS-C10 | The edge shall expose `/healthcheck` and `/ping` on port 8081, each returning HTTP 204. | `[VERIFIED]` | `default.conf.template:137-150` |
 | URS-C11 | The edge shall deny requests to `/` on the management port. | `[VERIFIED]` | `default.conf.template:140-142` |
 | URS-C12 | The edge shall serve the caching service OpenAPI document and Swagger UI under `/swagger/`. | `[VERIFIED]` | `default.conf.template:42-48` |

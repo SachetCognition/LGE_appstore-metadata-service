@@ -275,7 +275,7 @@ sequenceDiagram
     NX->>BS: "@backend proxy_pass"
     BS-->>NX: "connection refused or 5xx"
     NX->>NX: "proxy_intercept_errors on, error_page 500 501 502 503 504 @50x"
-    NX-->>STB: "500 application/json {error: {httpStatusCode: 500, message: Internal Server Error, details: }}"
+    NX-->>STB: "upstream status (e.g. 502/504) with application/json {error: {httpStatusCode: 500, message: Internal Server Error, details: }}"
 ```
 
 Evidence for the failure paths:

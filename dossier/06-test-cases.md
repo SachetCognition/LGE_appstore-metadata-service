@@ -107,7 +107,7 @@ Test cases below are derived from the requirements in [05-urs](05-urs.md) and us
 | TC-C02 | Given the file is absent, when the STB requests it, then the request is rewritten to `/applications/{path}` and proxied to the bundle service. | URS-C03, URS-C04 |
 | TC-C03 | Given the client sends no `x-request-id`, when the request is proxied, then the upstream receives a generated id. | URS-C05 |
 | TC-C04 | Given the client sends `x-request-id`, when the request is proxied, then the upstream receives that exact value. | URS-C05 |
-| TC-C05 | Given the bundle service is unreachable or answers 5xx, when a cache miss occurs, then HTTP 500 with the fixed JSON error body and `Content-Type: application/json` is returned. | URS-C09 |
+| TC-C05 | Given the bundle service is unreachable or answers 5xx, when a cache miss occurs, then the upstream 5xx status is preserved and the fixed JSON error body with `Content-Type: application/json` is returned. | URS-C09 |
 | TC-C06 | Given a `/platforms` or `/bundles` request, when it is handled, then it is proxied to `asbm-backend`. | URS-C06 |
 | TC-C07 | Given an `OPTIONS` preflight to a bundle or `asbm-backend` route, when it is handled, then HTTP 204 with CORS allow-origin, allow-methods, allow-headers and max-age is returned. | URS-C07 |
 | TC-C08 | Given a `GET` on those routes, when it is answered, then `Access-Control-Allow-Origin: *` is present. | URS-C08 |

@@ -273,7 +273,7 @@ flowchart TB
   G --> H{"Upstream response"}
   H -->|"202 Retry-After"| I["STB retries later"]
   H -->|"404"| J["Pass through 404 ErrorResponse"]
-  H -->|"5xx or unreachable"| K["proxy_intercept_errors -> @50x JSON 500"]
+  H -->|"5xx or unreachable"| K["proxy_intercept_errors -> @50x fixed JSON body, upstream status preserved"]
   A -->|"GET /platforms or /bundles"| L["proxy_pass asbm-backend [INFERRED, ASBM_SERVICE unset in helm]"]
   M["Ops"] -->|"GET :8081/healthcheck or /ping"| N["204 No Content"]
 ```
