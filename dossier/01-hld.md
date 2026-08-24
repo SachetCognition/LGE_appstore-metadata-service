@@ -1,6 +1,6 @@
 # 01 — High-Level Design
 
-Dossier index: [README.md](README.md) · Previous: [00-overview-and-scope.md](00-overview-and-scope.md) · Next: [02-lld.md](02-lld.md) · Related: [05-messaging-and-async.md](05-messaging-and-async.md) · [06-deployment-and-ops.md](06-deployment-and-ops.md) · [10-open-questions.md](10-open-questions.md)
+Dossier index: [README.md](README.md) · Siblings: [00-overview-and-scope.md](00-overview-and-scope.md) · [01-hld.md](01-hld.md) · [02-lld.md](02-lld.md) · [03-processes-L1-L4.md](03-processes-L1-L4.md) · [04-business-journeys.md](04-business-journeys.md) · [05-urs.md](05-urs.md) · [06-test-cases.md](06-test-cases.md) · [07-capability-matrix.md](07-capability-matrix.md) · [08-fit-gap.md](08-fit-gap.md) · [09-consolidation-recommendation.md](09-consolidation-recommendation.md) · [10-open-questions.md](10-open-questions.md)
 
 Citation and labelling conventions are defined in [00-overview-and-scope.md](00-overview-and-scope.md).
 
@@ -155,7 +155,7 @@ sequenceDiagram
     ASBS->>DB: "update status (ENCRYPTION_* or BUNDLE_ERROR)"
 ```
 
-Evidence: the two status-queue consumers and their validation (messages without `x-request-id` or without a timestamp are dropped) [VERIFIED] `appstore-bundle-service appstore-bundle-service-application/src/main/java/com/lgi/appstorebundle/configuration/RabbitMQConsumersConfiguration.java:68-122`, `appstore-bundle-service appstore-bundle-service-application/src/main/java/com/lgi/appstorebundle/util/ConsumerFactory.java`; the encryption decision on the feedback path re-reading the persisted `encryption` column [VERIFIED] `appstore-bundle-service appstore-bundle-service-application/src/main/java/com/lgi/appstorebundle/util/EncryptionHelper.java`. Details and the drift risk are in [02-lld.md](02-lld.md) and [05-messaging-and-async.md](05-messaging-and-async.md).
+Evidence: the two status-queue consumers and their validation (messages without `x-request-id` or without a timestamp are dropped) [VERIFIED] `appstore-bundle-service appstore-bundle-service-application/src/main/java/com/lgi/appstorebundle/configuration/RabbitMQConsumersConfiguration.java:68-122`, `appstore-bundle-service appstore-bundle-service-application/src/main/java/com/lgi/appstorebundle/util/ConsumerFactory.java`; the encryption decision on the feedback path re-reading the persisted `encryption` column [VERIFIED] `appstore-bundle-service appstore-bundle-service-application/src/main/java/com/lgi/appstorebundle/util/EncryptionHelper.java`. Details and the drift risk are in [02-lld.md](02-lld.md) and [08-fit-gap.md](08-fit-gap.md).
 
 ### 3.4 Delivery flow (cache hit)
 

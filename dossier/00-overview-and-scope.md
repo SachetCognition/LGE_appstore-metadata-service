@@ -1,6 +1,6 @@
 # 00 — Overview and Scope
 
-Dossier index: [README.md](README.md) · Siblings: [01-hld.md](01-hld.md) · [02-lld.md](02-lld.md) · [03-api-contracts.md](03-api-contracts.md) · [04-data-model.md](04-data-model.md) · [05-messaging-and-async.md](05-messaging-and-async.md) · [06-deployment-and-ops.md](06-deployment-and-ops.md) · [07-testing.md](07-testing.md) · [08-consolidation-analysis.md](08-consolidation-analysis.md) · [09-risks-and-gaps.md](09-risks-and-gaps.md) · [10-open-questions.md](10-open-questions.md)
+Dossier index: [README.md](README.md) · Siblings: [00-overview-and-scope.md](00-overview-and-scope.md) · [01-hld.md](01-hld.md) · [02-lld.md](02-lld.md) · [03-processes-L1-L4.md](03-processes-L1-L4.md) · [04-business-journeys.md](04-business-journeys.md) · [05-urs.md](05-urs.md) · [06-test-cases.md](06-test-cases.md) · [07-capability-matrix.md](07-capability-matrix.md) · [08-fit-gap.md](08-fit-gap.md) · [09-consolidation-recommendation.md](09-consolidation-recommendation.md) · [10-open-questions.md](10-open-questions.md)
 
 ## Purpose
 
@@ -8,7 +8,7 @@ This dossier is a reverse-engineering record of the LGE AppStore platform, produ
 
 1. Describe what each service actually does today (not what documentation or naming suggests it does).
 2. Make the cross-service contracts explicit: REST paths, HTTP semantics, database schemas, RabbitMQ queues and message payloads, and the filesystem hand-off for generated bundles.
-3. Provide a basis for consolidation analysis (see [08-consolidation-analysis.md](08-consolidation-analysis.md)) by highlighting duplicated concerns, behavioural quirks, and gaps in configuration/coverage.
+3. Provide a basis for consolidation analysis (see [09-consolidation-recommendation.md](09-consolidation-recommendation.md)) by highlighting duplicated concerns, behavioural quirks, and gaps in configuration/coverage.
 
 Everything is derived from code in the repositories listed below. Where behaviour depends on components that are *not* in these repositories (bundle generator, bundle cryptor, API gateway, `asbm-backend`), that is stated explicitly rather than assumed.
 
@@ -35,7 +35,7 @@ No repository for this service is in scope, and nothing in the three repositorie
 It is flagged rather than documented because:
 
 - Its API, data model, and authentication are unknown, so the platform's external surface cannot be fully described from these repositories.
-- The caching service will fail to start (or fail to resolve the upstream) if `ASBM_SERVICE` is unset — and the Helm chart's `configMap` defines `ASBS_SERVICE` but **not** `ASBM_SERVICE`. [VERIFIED] `appstore-caching-service helm/appstore-caching-service/values.yaml:30-34` vs `appstore-caching-service appstore-caching-service-nginx/default.conf.template:24-26`. See [09-risks-and-gaps.md](09-risks-and-gaps.md).
+- The caching service will fail to start (or fail to resolve the upstream) if `ASBM_SERVICE` is unset — and the Helm chart's `configMap` defines `ASBS_SERVICE` but **not** `ASBM_SERVICE`. [VERIFIED] `appstore-caching-service helm/appstore-caching-service/values.yaml:30-34` vs `appstore-caching-service appstore-caching-service-nginx/default.conf.template:24-26`. See [08-fit-gap.md](08-fit-gap.md).
 - Any consolidation plan that touches the caching service's routing has to account for a consumer whose contract cannot be verified here.
 
 ## Known unknowns (summary)

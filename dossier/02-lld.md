@@ -1,6 +1,6 @@
 # 02 — Low-Level Design
 
-Dossier index: [README.md](README.md) · Previous: [01-hld.md](01-hld.md) · Related: [03-api-contracts.md](03-api-contracts.md) · [04-data-model.md](04-data-model.md) · [05-messaging-and-async.md](05-messaging-and-async.md) · [06-deployment-and-ops.md](06-deployment-and-ops.md) · [09-risks-and-gaps.md](09-risks-and-gaps.md) · [10-open-questions.md](10-open-questions.md)
+Dossier index: [README.md](README.md) · Siblings: [00-overview-and-scope.md](00-overview-and-scope.md) · [01-hld.md](01-hld.md) · [02-lld.md](02-lld.md) · [03-processes-L1-L4.md](03-processes-L1-L4.md) · [04-business-journeys.md](04-business-journeys.md) · [05-urs.md](05-urs.md) · [06-test-cases.md](06-test-cases.md) · [07-capability-matrix.md](07-capability-matrix.md) · [08-fit-gap.md](08-fit-gap.md) · [09-consolidation-recommendation.md](09-consolidation-recommendation.md) · [10-open-questions.md](10-open-questions.md)
 
 Citation and labelling conventions are defined in [00-overview-and-scope.md](00-overview-and-scope.md).
 
@@ -181,7 +181,7 @@ STB list filtering [VERIFIED] `api/stb/PersistentAppsService.java:142-176`:
 - `type` → `APPLICATION.TYPE.contains(type)`, `category` → `APPLICATION.CATEGORY.contains(category)` — substring matching rather than equality (`:155-171`).
 - `maintainerName` → equality on the joined `maintainer.name` (`:174-175`).
 
-These conditions are assembled by string concatenation into `DSL.condition(...)` with the raw parameter values inlined (`:160-168`). [INFERRED] this is an injection-shaped pattern; `Platform` is a bound enum-like type, which limits exposure, so it is recorded as a risk to review rather than a confirmed vulnerability — see [09-risks-and-gaps.md](09-risks-and-gaps.md).
+These conditions are assembled by string concatenation into `DSL.condition(...)` with the raw parameter values inlined (`:160-168`). [INFERRED] this is an injection-shaped pattern; `Platform` is a bound enum-like type, which limits exposure, so it is recorded as a risk to review rather than a confirmed vulnerability — see [08-fit-gap.md](08-fit-gap.md).
 
 ### Transactional recalculation on create/update/delete
 
@@ -343,7 +343,7 @@ jOOQ/SQL default sort direction is ascending and no `.desc()` is applied, so for
 - If the oldest row is `BUNDLE_ERROR` while a newer row is progressing normally, `IS_NOT_BUNDLE_ERROR` filters it out and the controller starts **another** generation, duplicating work and rows (`AppStoreBundleController.java:101-109`).
 - Conversely, if the oldest row is a stale non-error row, a genuinely failed newer attempt is never retried.
 
-This is a behavioural defect, not a documented design choice; nothing in the repository comments on the ordering. See [09-risks-and-gaps.md](09-risks-and-gaps.md).
+This is a behavioural defect, not a documented design choice; nothing in the repository comments on the ordering. See [08-fit-gap.md](08-fit-gap.md).
 
 Other DAO details [VERIFIED] `JooqBundleDao.java:65-133`: `saveBundleWithStatus` inserts `id, application_id, application_version, platform_name, firmware_version, status, x_request_id, created_at, message_timestamp, encryption` (`:72-99`); `updateStatusForBundle` updates status/`updated_at`/`message_timestamp` unconditionally (`:101-111`); `updateBundleStatusIfNewer` adds `and message_timestamp < :messageTimestamp` and reports whether a row was affected (`:113-125`) — this is the out-of-order-message guard; reads use a read-only datasource (`readDslContext`) and writes a separate write datasource (`:41-51`, configured via `spring.datasource.hikari.read.*` / `.write.*` in `appstore-bundle-service appstore-bundle-service-application/src/main/resources/config/application.properties:43-59`).
 
@@ -511,6 +511,6 @@ All [VERIFIED], under `appstore-caching-service helm/appstore-caching-service/`:
 - **Service** (`templates/service.yaml:28-36`): `ClusterIP`, `port: 80` → `targetPort: 8080` (`values.yaml:25-28`). Port `8081` (healthcheck/ping) is **not** exposed by the Service and the Deployment declares no `livenessProbe`/`readinessProbe` — the health endpoints exist but nothing in the chart uses them. [VERIFIED — absence] `templates/deployment.yaml`, `templates/service.yaml`.
 - **ConfigMap** (`templates/configmap.yaml:20-53`) renders every key of `.Values.configMap`. The defaults define `ASBS_SERVICE`, `ENCRYPTED_BUNDLES_PATH`, `API_URL`, `DNS_RESOLVER_CONFIGURATION` (`values.yaml:30-34`).
 
-**Missing `ASBM_SERVICE`.** The template requires `${ASBM_SERVICE}` for the `asbm-backend` upstream, but the chart's `configMap` defaults do not define it, and nothing else in the chart supplies it. Unless it is injected through overrides at deploy time, `envsubst` renders `server ;` and Nginx fails to start. [VERIFIED] `appstore-caching-service appstore-caching-service-nginx/default.conf.template:24-26` vs `appstore-caching-service helm/appstore-caching-service/values.yaml:30-34`. This is the most concrete configuration gap found in the caching service — see [09-risks-and-gaps.md](09-risks-and-gaps.md) and [10-open-questions.md](10-open-questions.md).
+**Missing `ASBM_SERVICE`.** The template requires `${ASBM_SERVICE}` for the `asbm-backend` upstream, but the chart's `configMap` defaults do not define it, and nothing else in the chart supplies it. Unless it is injected through overrides at deploy time, `envsubst` renders `server ;` and Nginx fails to start. [VERIFIED] `appstore-caching-service appstore-caching-service-nginx/default.conf.template:24-26` vs `appstore-caching-service helm/appstore-caching-service/values.yaml:30-34`. This is the most concrete configuration gap found in the caching service — see [08-fit-gap.md](08-fit-gap.md) and [10-open-questions.md](10-open-questions.md).
 
 Also note `API_URL: '/etc/nginx/swagger.yaml'` in the ConfigMap (`values.yaml:33`) while the Nginx config aliases `/swagger/swagger.yaml` to `/etc/nginx/appstore-caching-service.yaml` (`default.conf.template:46-48`) — the two filenames do not match, and `API_URL` is not referenced by the template. [VERIFIED]
